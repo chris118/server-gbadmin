@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>   
+    <link href="./stylesheets/style.css" rel="stylesheet"/>
+    <link href="./stylesheets/login.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <div id="warning" style="display: none" class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                登录失败
+            </div>
+
+            <form class="form-horizontal">
+                <span class="heading">用户登录</span>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="inputEmail3" placeholder="用户名或电子邮件">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="form-group help">
+                    <input type="password" class="form-control" id="inputPassword3" placeholder="密　码">
+                    <i class="fa fa-lock"></i>
+                    <a href="#" class="fa fa-question-circle"></a>
+                </div>
+                <div class="form-group">
+                    <div class="main-checkbox">
+                        <input type="checkbox" value="None" id="checkbox1" name="check"/>
+                        <label for="checkbox1"></label>
+                    </div>
+                    <span class="text">Remember me</span>
+                    <button id="submit" type="button" class="btn btn-default">登录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#submit").click( function () {
+        var email = $("#inputEmail3").val();
+        var password = $("#inputPassword3").val();
+        if(!email){
+            alert("email is null");
+        }
+        if(!password){
+            alert("password is null");
+        }
+
+        $.ajax({
+            url:'http://localhost:9998/login',
+            type:'POST', //GET
+            async:true,    //或false,是否异步
+            data:{
+                name:email,
+                password:password
+            },
+            timeout:5000,    //超时时间
+            dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+            beforeSend:function(xhr){
+                console.log(xhr)
+                console.log('发送前')
+            },
+            success:function(data,textStatus,jqXHR){
+                console.log(data)
+                console.log(textStatus)
+                console.log(jqXHR)
+                window.location.href = "http://localhost:9999/home.html";
+            },
+            error:function(xhr,textStatus){
+                console.log('错误')
+                console.log(xhr)
+                console.log(textStatus)
+                $("#warning").show();
+
+            },
+            complete:function(){
+                console.log('结束')
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
