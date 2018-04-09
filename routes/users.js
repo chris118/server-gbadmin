@@ -73,24 +73,19 @@ function login(req, res) {
     var md5 = crypto.createHash('md5');
     var password = md5.update(req.body.password).digest('hex');
     var name = req.body.name;
-    console.log("name: ", name);
-    console.log("password : ", password);
 
     //检查用户名是否已经存在
     User.get(name, function (err, result) {
-        console.log("User.get err: ", err);
         if(err){
             string.responseJson(res, '用户不存在!');
             return;
         }
-        console.log("User.get result", result);
         if(result.length == 0){
             string.responseJson(res, '用户不存在!');
             return;
         }
 
         //检查密码是否一致
-        console.log("User.get password", result[0]);
         if (result[0].password != password) {
             req.flash('error', '密码错误!');
             string.responseJson(res, '密码不一致!');
